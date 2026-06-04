@@ -225,7 +225,17 @@
             }
         });
 
-        window.onload = clearDisplay;
+        window.onload = function() {
+            clearDisplay();
+            document.addEventListener("click", function unlockAudio() {
+                for (const key in sounds) {
+                    sounds[key].play().then(function() {
+                        sounds[key].pause();
+                        sounds[key].currentTime = 0;
+                    }).catch(function() {});
+                }
+            }, { once: true });
+        };
     </script>
 </head>
 <body>
