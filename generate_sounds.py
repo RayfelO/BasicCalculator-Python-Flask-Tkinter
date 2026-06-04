@@ -29,9 +29,13 @@ def envelope(t, duration, attack=0.01, release=0.1):
 
 
 def click_sound(t, duration, sample_rate):
-    noise = (hash(str(int(t * sample_rate))) % 1000 - 500) / 500.0
-    env = envelope(t, duration, attack=0.001, release=0.05)
-    return noise * env * 0.5
+    f1 = 1200.0
+    f2 = 2400.0
+    env = envelope(t, duration, attack=0.001, release=0.06)
+    decay = math.exp(-t * 60)
+    wave1 = math.sin(2 * math.pi * f1 * t)
+    wave2 = math.sin(2 * math.pi * f2 * t)
+    return (wave1 * 0.6 + wave2 * 0.4) * env * decay * 0.5
 
 
 def hover_sound(t, duration, sample_rate):
