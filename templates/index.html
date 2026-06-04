@@ -1,91 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora</title>
     <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 10px;
         }
 
         .calculator {
             background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 400px; /* Ajustar el ancho */
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
             padding: 20px;
         }
 
         #result {
-            font-size: 32px; /* Aumentar el tamaño del texto */
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
+            border: none;
+            border-radius: 12px;
             text-align: right;
-            background-color: #e6e6e6;
+            background-color: #1e293b;
+            color: #f8fafc;
             margin-bottom: 20px;
-            height: 60px; /* Ajustar la altura */
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
         }
 
         .button {
-            width: 90px; /* Ajustar el ancho */
-            height: 90px; /* Ajustar la altura */
-            font-size: 24px; /* Tamaño de fuente */
-            margin: 5px;
+            width: 100%;
+            aspect-ratio: 1;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             border: none;
-            border-radius: 5px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            background-color: #f9f9f9; /* Color de fondo para los botones */
+            transition: all 0.15s ease;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
         }
 
         .button:hover {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        .operator {
-            background-color: #f0ad4e; /* Color de fondo para los operadores */
-        }
-
-        .clear {
-            background-color: #d9534f; /* Color de fondo para el botón C */
-            color: white;
-        }
-
-        .equals {
-            background-color: #5cb85c; /* Color de fondo para el botón = */
-            color: white;
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
         }
 
         .button:active {
-            background-color: #007BFF; /* Color de fondo cuando se presiona */
-            transform: scale(0.95); /* Efecto de presión */
+            background-color: #cbd5e1;
+            transform: translateY(0) scale(0.97);
+        }
+
+        .operator {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .operator:hover {
+            background-color: #d97706;
+        }
+
+        .clear {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .clear:hover {
+            background-color: #dc2626;
+        }
+
+        .equals {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .equals:hover {
+            background-color: #059669;
         }
     </style>
     <script>
         function updateDisplay(value) {
             const display = document.getElementById("result");
-            display.innerHTML += value;
-            document.getElementById("current_input").value += value;
+            const input = document.getElementById("current_input");
+            if (display.innerText === "0" || display.innerText === "Error") {
+                display.innerText = value;
+                input.value = value;
+            } else {
+                display.innerText += value;
+                input.value += value;
+            }
         }
 
         function clearDisplay() {
-            document.getElementById("result").innerHTML = "";
+            document.getElementById("result").innerText = "0";
             document.getElementById("current_input").value = "";
         }
 
         function calculate() {
-            const form = document.getElementById("calculatorForm");
             const resultField = document.getElementById("result");
             const currentInput = document.getElementById("current_input").value;
+
+            if (!currentInput) return;
 
             fetch("/", {
                 method: "POST",
@@ -102,23 +142,24 @@
             .then(html => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
-                resultField.innerHTML = doc.getElementById("result").innerHTML;
-                document.getElementById("current_input").value = doc.getElementById("current_input").value;
+                const newResult = doc.getElementById("result").innerText;
+                resultField.innerText = newResult;
+                document.getElementById("current_input").value = newResult === "Error" ? "" : newResult;
+            })
+            .catch(() => {
+                resultField.innerText = "Error";
             });
         }
 
-        // Llamar a clearDisplay cuando se carga la página
-        window.onload = function() {
-            clearDisplay();
-        }
+        window.onload = clearDisplay;
     </script>
 </head>
 <body>
     <div class="calculator">
-        <div id="result">{{ current_input if current_input else '0' }}</div>
+        <div id="result">0</div>
         <form id="calculatorForm" method="POST" onsubmit="return false;">
             <input type="hidden" id="current_input" name="current_input" value="{{ current_input }}">
-            <div style="display: flex; flex-wrap: wrap;">
+            <div class="button-grid">
                 <button type="button" class="button" onclick="updateDisplay('7')">7</button>
                 <button type="button" class="button" onclick="updateDisplay('8')">8</button>
                 <button type="button" class="button" onclick="updateDisplay('9')">9</button>
