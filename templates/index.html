@@ -122,10 +122,10 @@
     </style>
     <script>
         const sounds = {
-            click: new Audio("{{ url_for('assets', filename='sounds/button_click.wav') }}"),
-            hover: new Audio("{{ url_for('assets', filename='sounds/button_hover.wav') }}"),
-            success: new Audio("{{ url_for('assets', filename='sounds/button_success.wav') }}"),
-            error: new Audio("{{ url_for('assets', filename='sounds/button_error.wav') }}"),
+            click: new Audio("{{ url_for('static', filename='sounds/button_click.wav') }}"),
+            hover: new Audio("{{ url_for('static', filename='sounds/button_hover.wav') }}"),
+            success: new Audio("{{ url_for('static', filename='sounds/button_success.wav') }}"),
+            error: new Audio("{{ url_for('static', filename='sounds/button_error.wav') }}"),
         };
 
         function playSound(name) {

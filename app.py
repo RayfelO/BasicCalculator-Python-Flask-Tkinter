@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 
 from calculator_engine import safe_eval
 
@@ -49,11 +49,6 @@ def index():
         )
 
     return render_template("index.html", result="", current_input="")
-
-
-@app.route("/assets/<path:filename>")
-def assets(filename):
-    return send_from_directory("assets", filename)
 
 
 if __name__ == "__main__":
