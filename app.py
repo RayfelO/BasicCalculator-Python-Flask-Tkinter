@@ -1,6 +1,11 @@
+import os
+
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+from calculator_engine import safe_eval
+
+TEMPLATE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "templates"))
+app = Flask(__name__, template_folder=TEMPLATE_DIR)
 
 
 class Calculator:
@@ -15,7 +20,7 @@ class Calculator:
 
     def calculate_result(self):
         try:
-            self.result = str(eval(self.result))  # Evalúa la expresión actual
+            self.result = str(safe_eval(self.result))
         except ZeroDivisionError:
             self.result = "Error"
         except Exception:
@@ -35,12 +40,10 @@ def index():
             calculator.result = current_input + value
         elif action == "clear":
             calculator.clear_result()
-            calculator.result = ""
         elif action == "calculate":
             calculator.result = current_input
             calculator.calculate_result()
 
-        # Renderiza la plantilla con el resultado
         return render_template(
             "index.html", result=calculator.result, current_input=calculator.result
         )

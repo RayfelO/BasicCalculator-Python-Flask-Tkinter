@@ -1,4 +1,8 @@
 import tkinter as tk
+from functools import partial
+
+from calculator_engine import safe_eval
+
 
 class Calculator:
     def __init__(self, root):
@@ -10,16 +14,34 @@ class Calculator:
         self.create_widgets()
 
     def create_widgets(self):
-        # Campo de texto para mostrar los resultados
-        result_entry = tk.Entry(self.root, textvariable=self.result_var, font=('Arial', 24), bd=10, insertwidth=4, width=14, borderwidth=4)
+        result_entry = tk.Entry(
+            self.root,
+            textvariable=self.result_var,
+            font=("Arial", 24),
+            bd=10,
+            insertwidth=4,
+            width=14,
+            borderwidth=4,
+        )
         result_entry.grid(row=0, column=0, columnspan=4)
 
-        # Botones
         buttons = [
-            '7', '8', '9', '/', 
-            '4', '5', '6', '*', 
-            '1', '2', '3', '-', 
-            '0', 'C', '=', '+'
+            "7",
+            "8",
+            "9",
+            "/",
+            "4",
+            "5",
+            "6",
+            "*",
+            "1",
+            "2",
+            "3",
+            "-",
+            "0",
+            "C",
+            "=",
+            "+",
         ]
 
         row_val = 1
@@ -33,13 +55,21 @@ class Calculator:
                 row_val += 1
 
     def create_button(self, value, row, col):
-        if value == '=':
-            button = tk.Button(self.root, text=value, padx=40, pady=20, font=('Arial', 18), command=self.calculate_result)
-        elif value == 'C':
-            button = tk.Button(self.root, text=value, padx=40, pady=20, font=('Arial', 18), command=self.clear_result)
+        if value == "=":
+            cmd = self.calculate_result
+        elif value == "C":
+            cmd = self.clear_result
         else:
-            button = tk.Button(self.root, text=value, padx=40, pady=20, font=('Arial', 18), command=lambda: self.append_value(value))
+            cmd = partial(self.append_value, value)
 
+        button = tk.Button(
+            self.root,
+            text=value,
+            padx=40,
+            pady=20,
+            font=("Arial", 18),
+            command=cmd,
+        )
         button.grid(row=row, column=col)
 
     def append_value(self, value):
@@ -51,10 +81,11 @@ class Calculator:
 
     def calculate_result(self):
         try:
-            result = eval(self.result_var.get())
+            result = safe_eval(self.result_var.get())
             self.result_var.set(result)
-        except Exception as e:
+        except Exception:
             self.result_var.set("Error")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
