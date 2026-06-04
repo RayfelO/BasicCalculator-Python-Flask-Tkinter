@@ -28,7 +28,7 @@ class Calculator:
         self.root.configure(bg=self.COLORS["bg"])
         self.root.resizable(False, False)
 
-        icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
+        icon_path = os.path.join(os.path.dirname(__file__), "static", "logo.ico")
         if os.path.exists(icon_path):
             self.root.iconbitmap(icon_path)
 
