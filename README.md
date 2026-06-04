@@ -14,6 +14,12 @@ Calculadora dual: una aplicación de escritorio desarrollada con **Tkinter** y u
 - **Lógica Segura:** Evaluación de expresiones matemáticas mediante parser seguro, sin uso de `eval()`.
 - **Tests Automatizados:** Cobertura de pruebas unitarias para la lógica de negocio y la aplicación web.
 
+## Screenshots
+
+| Escritorio | Web |
+|---|---|
+| ![Desktop](assets/screenshots/desktop.png) | ![Web](assets/screenshots/web.png) |
+
 ## Tecnologías
 
 - [Python](https://www.python.org/)
