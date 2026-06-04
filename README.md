@@ -74,22 +74,19 @@ python app.py
 
 Abre tu navegador en `http://127.0.0.1:5000`.
 
-> **Despliegue en producción:** La aplicación web está optimizada para desplegarse en plataformas serverless como [Vercel](https://vercel.com/) o [Render](https://render.com/) mediante un WSGI entrypoint.
+> **Despliegue en producción:** La aplicación web está configurada para desplegarse directamente en [Vercel](https://vercel.com/). El archivo `vercel.json` ya está preparado.
 
 ## Despliegue
 
 ### Web (Vercel)
 
-El proyecto está configurado para desplegarse automáticamente en [Vercel](https://vercel.com/) mediante GitHub Actions.
+1. Ve a [vercel.com](https://vercel.com) e inicia sesión.
+2. Clic en **Add New... > Project**.
+3. Importa tu repositorio `BasicTkinterCalculator` desde GitHub.
+4. Vercel detectará automáticamente la configuración de `vercel.json`.
+5. Clic en **Deploy**. Listo.
 
-1. Conecta tu repositorio de GitHub a Vercel.
-2. Configura los siguientes **Repository Secrets** en GitHub (`Settings > Secrets and variables > Actions`):
-   - `VERCEL_TOKEN`: Tu token de Vercel.
-   - `VERCEL_ORG_ID`: El ID de tu organización/personal en Vercel.
-   - `VERCEL_PROJECT_ID`: El ID del proyecto en Vercel.
-3. Cada `push` a `main` desencadenará el workflow `cd-vercel.yml` y desplegará la aplicación en producción.
-
-> **Nota:** Si prefieres la integración nativa de Vercel con GitHub (sin GitHub Actions), simplemente conecta el repo desde el dashboard de Vercel. El archivo `vercel.json` ya está preparado para ello.
+Cada push a `main` actualizará automáticamente la web.
 
 ### Ejecutable de Escritorio
 
