@@ -5,8 +5,8 @@
 <h1 align="center">basic-tkinter-calculator</h1>
 
 <p align="center">
-  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml/badge.svg?branch=dev" alt="CI"></a>
-  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml/badge.svg?branch=dev" alt="CD"></a>
+  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml/badge.svg" alt="CD"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python Version"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
