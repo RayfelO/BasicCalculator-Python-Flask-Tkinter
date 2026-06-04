@@ -121,7 +121,22 @@
         }
     </style>
     <script>
+        const sounds = {
+            click: new Audio("{{ url_for('assets', filename='sounds/button_click.wav') }}"),
+            hover: new Audio("{{ url_for('assets', filename='sounds/button_hover.wav') }}"),
+            success: new Audio("{{ url_for('assets', filename='sounds/button_success.wav') }}"),
+            error: new Audio("{{ url_for('assets', filename='sounds/button_error.wav') }}"),
+        };
+
+        function playSound(name) {
+            const s = sounds[name];
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
+
         function updateDisplay(value) {
+            playSound("click");
             const display = document.getElementById("result");
             const input = document.getElementById("current_input");
             if (display.innerText === "0" || display.innerText === "Error") {
@@ -134,6 +149,7 @@
         }
 
         function clearDisplay() {
+            playSound("hover");
             document.getElementById("result").innerText = "0";
             document.getElementById("current_input").value = "";
         }
@@ -162,11 +178,52 @@
                 const newResult = doc.getElementById("result").innerText;
                 resultField.innerText = newResult;
                 document.getElementById("current_input").value = newResult === "Error" ? "" : newResult;
+                if (newResult === "Error") {
+                    playSound("error");
+                } else {
+                    playSound("success");
+                }
             })
             .catch(() => {
                 resultField.innerText = "Error";
+                playSound("error");
             });
         }
+
+        function backspace() {
+            playSound("click");
+            const display = document.getElementById("result");
+            const input = document.getElementById("current_input");
+            let txt = display.innerText;
+            if (txt === "0" || txt === "Error" || txt.length <= 1) {
+                display.innerText = "0";
+                input.value = "";
+            } else {
+                txt = txt.slice(0, -1);
+                display.innerText = txt;
+                input.value = txt;
+            }
+        }
+
+        document.addEventListener("keydown", function(e) {
+            const key = e.key;
+            if (key >= "0" && key <= "9") {
+                e.preventDefault();
+                updateDisplay(key);
+            } else if (["+", "-", "*", "/"].includes(key)) {
+                e.preventDefault();
+                updateDisplay(key);
+            } else if (key === "Enter" || key === "=") {
+                e.preventDefault();
+                calculate();
+            } else if (key === "Escape" || key === "c" || key === "C") {
+                e.preventDefault();
+                clearDisplay();
+            } else if (key === "Backspace") {
+                e.preventDefault();
+                backspace();
+            }
+        });
 
         window.onload = clearDisplay;
     </script>
