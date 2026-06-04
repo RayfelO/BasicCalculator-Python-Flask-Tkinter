@@ -1,4 +1,5 @@
 import os
+import sys
 import tkinter as tk
 from functools import partial
 
@@ -28,9 +29,10 @@ class Calculator:
         self.root.configure(bg=self.COLORS["bg"])
         self.root.resizable(False, False)
 
-        icon_path = os.path.join(os.path.dirname(__file__), "static", "logo.ico")
-        if os.path.exists(icon_path):
-            self.root.iconbitmap(icon_path)
+        if sys.platform.startswith("win"):
+            icon_path = os.path.join(os.path.dirname(__file__), "static", "logo.ico")
+            if os.path.exists(icon_path):
+                self.root.iconbitmap(icon_path)
 
         self.result_var = tk.StringVar()
         self.create_widgets()
