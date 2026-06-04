@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora</title>
     <style>
+        :root {
+            --primary: #F0AD4E;
+            --primary-dark: #D97706;
+            --bg-start: #3E2F22;
+            --bg-end: #2B2118;
+            --calc-bg: #FFFBF5;
+            --display-bg: #2B2118;
+            --display-text: #F0AD4E;
+            --btn-bg: #FFF3E0;
+            --btn-text: #4A3728;
+            --btn-hover: #FFE0B2;
+            --clear: #E07A5F;
+            --clear-hover: #C05640;
+            --equals: #D4A373;
+            --equals-hover: #B08968;
+        }
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -12,7 +29,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,9 +39,9 @@
         }
 
         .calculator {
-            background-color: #fff;
+            background-color: var(--calc-bg);
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             width: 100%;
             max-width: 400px;
             padding: 20px;
@@ -36,8 +53,8 @@
             border: none;
             border-radius: 12px;
             text-align: right;
-            background-color: #1e293b;
-            color: #f8fafc;
+            background-color: var(--display-bg);
+            color: var(--display-text);
             margin-bottom: 20px;
             height: 70px;
             display: flex;
@@ -61,46 +78,45 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.15s ease;
-            background-color: #f1f5f9;
-            color: #1e293b;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
             font-weight: 600;
         }
 
         .button:hover {
-            background-color: #e2e8f0;
+            background-color: var(--btn-hover);
             transform: translateY(-2px);
         }
 
         .button:active {
-            background-color: #cbd5e1;
             transform: translateY(0) scale(0.97);
         }
 
         .operator {
-            background-color: #f59e0b;
-            color: white;
+            background-color: var(--primary);
+            color: var(--display-bg);
         }
 
         .operator:hover {
-            background-color: #d97706;
+            background-color: var(--primary-dark);
         }
 
         .clear {
-            background-color: #ef4444;
-            color: white;
+            background-color: var(--clear);
+            color: #FFFBF5;
         }
 
         .clear:hover {
-            background-color: #dc2626;
+            background-color: var(--clear-hover);
         }
 
         .equals {
-            background-color: #10b981;
-            color: white;
+            background-color: var(--equals);
+            color: var(--display-bg);
         }
 
         .equals:hover {
-            background-color: #059669;
+            background-color: var(--equals-hover);
         }
     </style>
     <script>
