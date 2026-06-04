@@ -26,7 +26,7 @@
 
 | Escritorio | Web |
 |---|---|
-| ![Desktop](assets/screenshots/desktop.png) | ![Web](assets/screenshots/web.png) |
+| ![Desktop](static/screenshots/desktop.png) | ![Web](static/screenshots/web.png) |
 
 ## Tecnologías
 
