@@ -6,76 +6,118 @@ from calculator_engine import safe_eval
 
 
 class Calculator:
+    COLORS = {
+        "bg": "#2B2118",
+        "card": "#FFFBF5",
+        "display_bg": "#1E1510",
+        "display_text": "#F0AD4E",
+        "num_bg": "#FFF3E0",
+        "num_text": "#4A3728",
+        "operator_bg": "#F0AD4E",
+        "operator_text": "#2B2118",
+        "clear_bg": "#E07A5F",
+        "clear_text": "#FFFBF5",
+        "equals_bg": "#D4A373",
+        "equals_text": "#2B2118",
+    }
+
     def __init__(self, root):
         self.root = root
         self.root.title("basic-tkinter-calculator")
-        self.root.geometry("400x600")
+        self.root.geometry("420x650")
+        self.root.configure(bg=self.COLORS["bg"])
+        self.root.resizable(False, False)
 
         icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
         if os.path.exists(icon_path):
             self.root.iconbitmap(icon_path)
-        self.result_var = tk.StringVar()
 
+        self.result_var = tk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
-        result_entry = tk.Entry(
-            self.root,
+        # Card container
+        card = tk.Frame(self.root, bg=self.COLORS["card"], bd=0)
+        card.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
+
+        # Display
+        display = tk.Entry(
+            card,
             textvariable=self.result_var,
-            font=("Arial", 24),
-            bd=10,
-            insertwidth=4,
-            width=14,
-            borderwidth=4,
+            font=("Segoe UI", 32),
+            bg=self.COLORS["display_bg"],
+            fg=self.COLORS["display_text"],
+            justify="right",
+            relief="flat",
+            bd=0,
+            highlightthickness=0,
+            insertbackground=self.COLORS["display_text"],
         )
-        result_entry.grid(row=0, column=0, columnspan=4)
+        display.pack(fill=tk.X, padx=12, pady=(12, 8), ipady=18)
+
+        # Buttons grid frame
+        grid = tk.Frame(card, bg=self.COLORS["card"])
+        grid.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 12))
+
+        for i in range(4):
+            grid.columnconfigure(i, weight=1, uniform="col")
+        for i in range(4):
+            grid.rowconfigure(i, weight=1, uniform="row")
 
         buttons = [
-            "7",
-            "8",
-            "9",
-            "/",
-            "4",
-            "5",
-            "6",
-            "*",
-            "1",
-            "2",
-            "3",
-            "-",
-            "0",
-            "C",
-            "=",
-            "+",
+            ("7", "num"),
+            ("8", "num"),
+            ("9", "num"),
+            ("/", "operator"),
+            ("4", "num"),
+            ("5", "num"),
+            ("6", "num"),
+            ("*", "operator"),
+            ("1", "num"),
+            ("2", "num"),
+            ("3", "num"),
+            ("-", "operator"),
+            ("0", "num"),
+            ("C", "clear"),
+            ("=", "equals"),
+            ("+", "operator"),
         ]
 
-        row_val = 1
+        row_val = 0
         col_val = 0
 
-        for button in buttons:
-            self.create_button(button, row_val, col_val)
+        for text, kind in buttons:
+            self.create_button(grid, text, kind, row_val, col_val)
             col_val += 1
             if col_val > 3:
                 col_val = 0
                 row_val += 1
 
-    def create_button(self, value, row, col):
-        if value == "=":
+    def create_button(self, parent, text, kind, row, col):
+        if text == "=":
             cmd = self.calculate_result
-        elif value == "C":
+        elif text == "C":
             cmd = self.clear_result
         else:
-            cmd = partial(self.append_value, value)
+            cmd = partial(self.append_value, text)
 
-        button = tk.Button(
-            self.root,
-            text=value,
-            padx=40,
-            pady=20,
-            font=("Arial", 18),
+        bg = self.COLORS.get(f"{kind}_bg", self.COLORS["num_bg"])
+        fg = self.COLORS.get(f"{kind}_text", self.COLORS["num_text"])
+
+        btn = tk.Button(
+            parent,
+            text=text,
+            font=("Segoe UI", 20, "bold"),
+            bg=bg,
+            fg=fg,
+            activebackground=fg,
+            activeforeground=bg,
+            relief="flat",
+            bd=0,
+            cursor="hand2",
             command=cmd,
         )
-        button.grid(row=row, column=col)
+        btn.grid(row=row, column=col, sticky="nsew", padx=5, pady=5)
 
     def append_value(self, value):
         current_text = self.result_var.get()
