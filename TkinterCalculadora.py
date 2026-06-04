@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from functools import partial
 
@@ -7,8 +8,12 @@ from calculator_engine import safe_eval
 class Calculator:
     def __init__(self, root):
         self.root = root
-        self.root.title("Calculadora")
+        self.root.title("basic-tkinter-calculator")
         self.root.geometry("400x600")
+
+        icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
+        if os.path.exists(icon_path):
+            self.root.iconbitmap(icon_path)
         self.result_var = tk.StringVar()
 
         self.create_widgets()
