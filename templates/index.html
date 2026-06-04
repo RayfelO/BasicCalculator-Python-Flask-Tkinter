@@ -173,7 +173,7 @@
 </head>
 <body>
     <div class="calculator">
-        <div id="result">0</div>
+        <div id="result">{{ current_input if current_input else '0' }}</div>
         <form id="calculatorForm" method="POST" onsubmit="return false;">
             <input type="hidden" id="current_input" name="current_input" value="{{ current_input }}">
             <div class="button-grid">
