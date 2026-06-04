@@ -1,11 +1,19 @@
-# BasicTkinterCalculator
+<p align="center">
+  <img src="static/logo.svg" width="120" alt="basic-tkinter-calculator logo">
+</p>
 
-[![CI](https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml/badge.svg)](https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml)
-[![CD](https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml/badge.svg)](https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml)
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<h1 align="center">basic-tkinter-calculator</h1>
 
-Calculadora dual: una aplicación de escritorio desarrollada con **Tkinter** y una calculadora web construida con **Flask**. Ambas permiten realizar operaciones matemáticas básicas de forma sencilla.
+<p align="center">
+  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml"><img src="https://github.com/Rayfel2/BasicTkinterCalculator/actions/workflows/cd-vercel.yml/badge.svg" alt="CD"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python Version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+<p align="center">
+  Calculadora dual: una aplicación de escritorio desarrollada con <strong>Tkinter</strong> y una calculadora web construida con <strong>Flask</strong>. Ambas permiten realizar operaciones matemáticas básicas de forma sencilla.
+</p>
 
 ## Características
 
