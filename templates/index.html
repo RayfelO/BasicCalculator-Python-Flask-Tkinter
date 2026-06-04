@@ -1,91 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+    <title>basic-tkinter-calculator</title>
     <style>
+        :root {
+            --primary: #F0AD4E;
+            --primary-dark: #D97706;
+            --bg-start: #3E2F22;
+            --bg-end: #2B2118;
+            --calc-bg: #FFFBF5;
+            --display-bg: #2B2118;
+            --display-text: #F0AD4E;
+            --btn-bg: #FFF3E0;
+            --btn-text: #4A3728;
+            --btn-hover: #FFE0B2;
+            --clear: #E07A5F;
+            --clear-hover: #C05640;
+            --equals: #D4A373;
+            --equals-hover: #B08968;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 10px;
         }
 
         .calculator {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 400px; /* Ajustar el ancho */
+            background-color: var(--calc-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
             padding: 20px;
         }
 
         #result {
-            font-size: 32px; /* Aumentar el tamaño del texto */
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
+            border: none;
+            border-radius: 12px;
             text-align: right;
-            background-color: #e6e6e6;
+            background-color: var(--display-bg);
+            color: var(--display-text);
             margin-bottom: 20px;
-            height: 60px; /* Ajustar la altura */
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
         }
 
         .button {
-            width: 90px; /* Ajustar el ancho */
-            height: 90px; /* Ajustar la altura */
-            font-size: 24px; /* Tamaño de fuente */
-            margin: 5px;
+            width: 100%;
+            aspect-ratio: 1;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             border: none;
-            border-radius: 5px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            background-color: #f9f9f9; /* Color de fondo para los botones */
+            transition: all 0.15s ease;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            font-weight: 600;
         }
 
         .button:hover {
-            background-color: #007BFF;
-            color: white;
-        }
-
-        .operator {
-            background-color: #f0ad4e; /* Color de fondo para los operadores */
-        }
-
-        .clear {
-            background-color: #d9534f; /* Color de fondo para el botón C */
-            color: white;
-        }
-
-        .equals {
-            background-color: #5cb85c; /* Color de fondo para el botón = */
-            color: white;
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
         }
 
         .button:active {
-            background-color: #007BFF; /* Color de fondo cuando se presiona */
-            transform: scale(0.95); /* Efecto de presión */
+            transform: translateY(0) scale(0.97);
+        }
+
+        .operator {
+            background-color: var(--primary);
+            color: var(--display-bg);
+        }
+
+        .operator:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .clear {
+            background-color: var(--clear);
+            color: #FFFBF5;
+        }
+
+        .clear:hover {
+            background-color: var(--clear-hover);
+        }
+
+        .equals {
+            background-color: var(--equals);
+            color: var(--display-bg);
+        }
+
+        .equals:hover {
+            background-color: var(--equals-hover);
         }
     </style>
     <script>
+        const sounds = {
+            click: new Audio("{{ url_for('static', filename='sounds/button_click.wav') }}"),
+            hover: new Audio("{{ url_for('static', filename='sounds/button_hover.wav') }}"),
+            success: new Audio("{{ url_for('static', filename='sounds/button_success.wav') }}"),
+            error: new Audio("{{ url_for('static', filename='sounds/button_error.wav') }}"),
+        };
+
+        function playSound(name) {
+            const s = sounds[name];
+            if (!s) return;
+            s.currentTime = 0;
+            s.play().catch(() => {});
+        }
+
         function updateDisplay(value) {
+            playSound("click");
             const display = document.getElementById("result");
-            display.innerHTML += value;
-            document.getElementById("current_input").value += value;
+            const input = document.getElementById("current_input");
+            if (display.innerText === "0" || display.innerText === "Error") {
+                display.innerText = value;
+                input.value = value;
+            } else {
+                display.innerText += value;
+                input.value += value;
+            }
         }
 
         function clearDisplay() {
-            document.getElementById("result").innerHTML = "";
+            playSound("hover");
+            document.getElementById("result").innerText = "0";
             document.getElementById("current_input").value = "";
         }
 
         function calculate() {
-            const form = document.getElementById("calculatorForm");
             const resultField = document.getElementById("result");
             const currentInput = document.getElementById("current_input").value;
+
+            if (!currentInput) return;
 
             fetch("/", {
                 method: "POST",
@@ -102,15 +175,67 @@
             .then(html => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
-                resultField.innerHTML = doc.getElementById("result").innerHTML;
-                document.getElementById("current_input").value = doc.getElementById("current_input").value;
+                const newResult = doc.getElementById("result").innerText;
+                resultField.innerText = newResult;
+                document.getElementById("current_input").value = newResult === "Error" ? "" : newResult;
+                if (newResult === "Error") {
+                    playSound("error");
+                } else {
+                    playSound("success");
+                }
+            })
+            .catch(() => {
+                resultField.innerText = "Error";
+                playSound("error");
             });
         }
 
-        // Llamar a clearDisplay cuando se carga la página
+        function backspace() {
+            playSound("click");
+            const display = document.getElementById("result");
+            const input = document.getElementById("current_input");
+            let txt = display.innerText;
+            if (txt === "0" || txt === "Error" || txt.length <= 1) {
+                display.innerText = "0";
+                input.value = "";
+            } else {
+                txt = txt.slice(0, -1);
+                display.innerText = txt;
+                input.value = txt;
+            }
+        }
+
+        document.addEventListener("keydown", function(e) {
+            const key = e.key;
+            if (key >= "0" && key <= "9") {
+                e.preventDefault();
+                updateDisplay(key);
+            } else if (["+", "-", "*", "/"].includes(key)) {
+                e.preventDefault();
+                updateDisplay(key);
+            } else if (key === "Enter" || key === "=") {
+                e.preventDefault();
+                calculate();
+            } else if (key === "Escape" || key === "c" || key === "C") {
+                e.preventDefault();
+                clearDisplay();
+            } else if (key === "Backspace") {
+                e.preventDefault();
+                backspace();
+            }
+        });
+
         window.onload = function() {
             clearDisplay();
-        }
+            document.addEventListener("click", function unlockAudio() {
+                for (const key in sounds) {
+                    sounds[key].play().then(function() {
+                        sounds[key].pause();
+                        sounds[key].currentTime = 0;
+                    }).catch(function() {});
+                }
+            }, { once: true });
+        };
     </script>
 </head>
 <body>
@@ -118,7 +243,7 @@
         <div id="result">{{ current_input if current_input else '0' }}</div>
         <form id="calculatorForm" method="POST" onsubmit="return false;">
             <input type="hidden" id="current_input" name="current_input" value="{{ current_input }}">
-            <div style="display: flex; flex-wrap: wrap;">
+            <div class="button-grid">
                 <button type="button" class="button" onclick="updateDisplay('7')">7</button>
                 <button type="button" class="button" onclick="updateDisplay('8')">8</button>
                 <button type="button" class="button" onclick="updateDisplay('9')">9</button>
